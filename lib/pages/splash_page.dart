@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shamo/providers/product_provider.dart';
 import 'package:shamo/theme.dart';
 
 class SplashPage extends StatefulWidget {
+  const SplashPage({Key? key}) : super(key: key);
+
   @override
-  _SplashPageState createState() => _SplashPageState();
+  State<SplashPage> createState() => _SplashPageState();
 }
 
 class _SplashPageState extends State<SplashPage> {
@@ -15,14 +15,12 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     // TODO: implement initState
 
-    getInit();
+    Timer(
+      Duration(seconds: 2),
+      () => Navigator.pushNamed(context, '/sign-in'),
+    );
 
     super.initState();
-  }
-
-  getInit() async {
-    await Provider.of<ProductProvider>(context, listen: false).getProducts();
-    Navigator.pushNamed(context, '/sign-in');
   }
 
   @override
@@ -34,12 +32,8 @@ class _SplashPageState extends State<SplashPage> {
           width: 130,
           height: 150,
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                'assets/image_splash.png',
-              ),
-            ),
-          ),
+              image: DecorationImage(
+                  image: AssetImage('assets/Image_Splash.png'))),
         ),
       ),
     );

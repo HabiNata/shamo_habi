@@ -1,52 +1,14 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shamo/providers/auth_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shamo/theme.dart';
-import 'package:shamo/widgets/loading_button.dart';
 
-class SignInPage extends StatefulWidget {
-  @override
-  _SignInPageState createState() => _SignInPageState();
-}
-
-class _SignInPageState extends State<SignInPage> {
-  TextEditingController emailController = TextEditingController(text: '');
-
-  TextEditingController passwordController = TextEditingController(text: '');
-
-  bool isLoading = false;
+class SignInPage extends StatelessWidget {
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of<AuthProvider>(context);
-
-    handleSignIn() async {
-      setState(() {
-        isLoading = true;
-      });
-
-      if (await authProvider.login(
-        email: emailController.text,
-        password: passwordController.text,
-      )) {
-        Navigator.pushNamed(context, '/home');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: alertColor,
-            content: Text(
-              'Gagal Login!',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-      }
-
-      setState(() {
-        isLoading = false;
-      });
-    }
-
     Widget header() {
       return Container(
         margin: EdgeInsets.only(top: 30),
@@ -57,14 +19,14 @@ class _SignInPageState extends State<SignInPage> {
               'Login',
               style: primaryTextStyle.copyWith(
                 fontSize: 24,
-                fontWeight: semiBold,
+                fontWeight: semibold,
               ),
             ),
             SizedBox(
               height: 2,
             ),
             Text(
-              'Sign In to Continue',
+              'Sign In to Countinue',
               style: subtitleTextStyle,
             ),
           ],
@@ -72,7 +34,7 @@ class _SignInPageState extends State<SignInPage> {
       );
     }
 
-    Widget emailInput() {
+    Widget EmailInput() {
       return Container(
         margin: EdgeInsets.only(top: 70),
         child: Column(
@@ -101,22 +63,21 @@ class _SignInPageState extends State<SignInPage> {
                 child: Row(
                   children: [
                     Image.asset(
-                      'assets/icon_email.png',
+                      'assets/Email_Icon.png',
                       width: 17,
+                      height: 12,
                     ),
                     SizedBox(
                       width: 16,
                     ),
                     Expanded(
-                      child: TextFormField(
-                        style: primaryTextStyle,
-                        controller: emailController,
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Your Email Address',
-                          hintStyle: subtitleTextStyle,
-                        ),
+                        child: TextFormField(
+                      style: primaryTextStyle,
+                      decoration: InputDecoration.collapsed(
+                        hintText: 'Your Email Address',
+                        hintStyle: subtitleTextStyle,
                       ),
-                    ),
+                    ))
                   ],
                 ),
               ),
@@ -126,7 +87,7 @@ class _SignInPageState extends State<SignInPage> {
       );
     }
 
-    Widget passwordInput() {
+    Widget PasswordInput() {
       return Container(
         margin: EdgeInsets.only(top: 20),
         child: Column(
@@ -155,23 +116,24 @@ class _SignInPageState extends State<SignInPage> {
                 child: Row(
                   children: [
                     Image.asset(
-                      'assets/icon_password.png',
+                      'assets/Password_Icon.png',
                       width: 17,
+                      height: 12,
                     ),
                     SizedBox(
                       width: 16,
                     ),
                     Expanded(
-                      child: TextFormField(
-                        style: primaryTextStyle,
-                        obscureText: true,
-                        controller: passwordController,
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Your Password',
-                          hintStyle: subtitleTextStyle,
-                        ),
+                        child: TextFormField(
+                      style: primaryTextStyle,
+                      obscureText: true,
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      decoration: InputDecoration.collapsed(
+                        hintText: 'Your Password',
+                        hintStyle: subtitleTextStyle,
                       ),
-                    ),
+                    ))
                   ],
                 ),
               ),
@@ -181,13 +143,44 @@ class _SignInPageState extends State<SignInPage> {
       );
     }
 
-    Widget signInButton() {
+    Widget footer() {
+      return Container(
+        margin: EdgeInsets.only(bottom: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Dont Have Account? ',
+              style: subtitleTextStyle.copyWith(
+                fontSize: 12,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/sign-up');
+              },
+              child: Text(
+                'Sign Up',
+                style: purpleTextStyle.copyWith(
+                  fontSize: 12,
+                  fontWeight: medium,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget SignInButton() {
       return Container(
         height: 50,
         width: double.infinity,
         margin: EdgeInsets.only(top: 30),
         child: TextButton(
-          onPressed: handleSignIn,
+          onPressed: () {
+            Navigator.pushNamed(context, '/home');
+          },
           style: TextButton.styleFrom(
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
@@ -205,35 +198,6 @@ class _SignInPageState extends State<SignInPage> {
       );
     }
 
-    Widget footer() {
-      return Container(
-        margin: EdgeInsets.only(bottom: 30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Don\'t have an account? ',
-              style: subtitleTextStyle.copyWith(
-                fontSize: 12,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, '/sign-up');
-              },
-              child: Text(
-                'Sign Up',
-                style: purpleTextStyle.copyWith(
-                  fontSize: 12,
-                  fontWeight: medium,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     return Scaffold(
       backgroundColor: backgroundColor1,
       resizeToAvoidBottomInset: false,
@@ -246,9 +210,9 @@ class _SignInPageState extends State<SignInPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               header(),
-              emailInput(),
-              passwordInput(),
-              isLoading ? LoadingButton() : signInButton(),
+              EmailInput(),
+              PasswordInput(),
+              SignInButton(),
               Spacer(),
               footer(),
             ],
